@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:BrokenLinkChecker.LocalizationResources;assembly=BrokenLinkChecker"
+		xmlns:assist="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+		xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+		xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="290"  Width="540"  Height="290"
+        x:Class="BrokenLinkChecker.Views.AboutWnd"
+        Title="{x:Static p:AboutRes.windowTitle}" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" CanResize="False">
+	<Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="128,*" Margin="10"  >
+		<Image  HorizontalAlignment="Left"    Grid.Row="0" Grid.Column="0" Source="avares://BrokenLinkChecker/Assets/Images/checklist.png"    Width="128" Height="128">
+		</Image>
+		<StackPanel Grid.Row="0" Grid.Column="1">
+			<TextBlock Classes="Headline4" Text="{x:Static p:AboutRes.appName}"></TextBlock>
+			<Label Margin="0,15,0,0" Classes="Headline6" Content="{x:Static p:AboutRes.version}"></Label>
+			<Label Classes="Subtitle1" Content="{Binding version}"></Label>
+		</StackPanel>
+		 
+	</Grid>
+</Window>

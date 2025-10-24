@@ -1,0 +1,117 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+		xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+		xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+		xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+		xmlns:p="clr-namespace:BrokenLinkChecker.LocalizationResources;assembly=BrokenLinkChecker"
+ 
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"  Width="1200" Height="800"
+        x:Class="BrokenLinkChecker.Views.MainWnd" WindowStartupLocation="CenterScreen" 
+        Title="{x:Static p:MainRes.WindowTitle}" Icon="avares://BrokenLinkChecker/Assets/Images/favicon.ico">
+ 
+	<DockPanel>
+		<controls:ColorZone  VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Height="40" Mode="PrimaryMid" ZIndex="1">
+			<Grid ColumnDefinitions="Auto,*">
+				<TextBlock Margin="10,0,0,0"  Grid.Column="0" Text="{x:Static p:MainRes.WindowTitle}" Classes="Headline6" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+				<Menu Grid.Column="1"  Height="32" Padding="0" Margin="0,0,10,0" HorizontalAlignment="Right">
+					<MenuItem Height="32" Width="32" Header="{avalonia:MaterialIconExt Kind=DotsVertical, Size=24}">
+						 
+						<MenuItem  Header="{x:Static p:MainRes.MenuSettings}"  Padding="0" Command="{Binding Settings}"    >
+							<MenuItem.Icon>
+								<avalonia:MaterialIcon Kind="Settings" Width="24" Height="24" />
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Header="{x:Static p:MainRes.MenuAbout}" Command="{Binding About}"    >
+							<MenuItem.Icon>
+								<avalonia:MaterialIcon Kind="Information" Foreground="Blue"  Width="24" Height="24" />
+							</MenuItem.Icon>
+						</MenuItem>
+						<Separator></Separator>
+						<MenuItem Header="{x:Static p:MainRes.MenuExit}" Command="{Binding Exit}"   >
+							<MenuItem.Icon>
+								<avalonia:MaterialIcon Kind="ExitToApp"  Width="24" Height="24"  />
+							</MenuItem.Icon>
+						</MenuItem>
+					</MenuItem>
+				</Menu>
+			</Grid>
+		</controls:ColorZone>
+		<Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Margin="10" >
+			<Grid Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+				<TextBox  UseFloatingWatermark="True" Classes="outline" Theme="{StaticResource OutlineTextBox}"  assists:TextFieldAssist.Label="{x:Static p:MainRes.SearchText}" Text="{Binding PageSitesSearch, Mode=TwoWay}"  />
+				<StackPanel Margin="10,8,0,0" Grid.Row="0"  Grid.Column="1" Orientation="Horizontal" Spacing="5"   >
+					<Button     Command="{Binding Start}"   IsEnabled="{Binding CanStart}"   >
+						<StackPanel Orientation="Vertical"  >
+							<avalonia:MaterialIcon Kind="PlayCircleOutline" Width="20" Height="20" ></avalonia:MaterialIcon>
+							<TextBlock   Text="{x:Static p:MainRes.StartText}"/>
+						</StackPanel>
+					</Button>
+					<Button Command="{Binding Stop}"   IsEnabled="{Binding CanStop}" >
+						<StackPanel Orientation="Vertical">
+							<avalonia:MaterialIcon Kind="StopCircleOutline" Width="20" Height="20" ></avalonia:MaterialIcon>
+							<TextBlock Text="{x:Static p:MainRes.StopText}"/>
+						</StackPanel>
+					</Button>					
+				</StackPanel>				
+			</Grid>
+			<ProgressBar Grid.Row="1" Margin="0,10,0,0" Height="8" IsIndeterminate="{Binding CanStop}"   IsEnabled="{Binding CanStop}" IsVisible="{Binding CanStop}" />
+			<DataGrid Margin="0,10,0,0"  GridLinesVisibility="All"     BorderThickness="2" CanUserResizeColumns="True" CanUserSortColumns="True"
+						Grid.Row="2" ItemsSource="{Binding VerifiedLinks}"  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"  >
+				<DataGrid.Columns>					
+					<DataGridTextColumn Header="{x:Static p:MainRes.HeadUrl}"  Binding="{Binding LinkUrl}" Width="*"/>
+					<DataGridTextColumn Header="{x:Static p:MainRes.HeadLinkText}"  Binding="{Binding LinkText}" Width="*"/>
+					<DataGridTextColumn Header="{x:Static p:MainRes.HeadPage}"  Binding="{Binding PageName}" Width="*"/>
+				</DataGrid.Columns>
+			</DataGrid>
+			<controls:Card  Grid.Row="3"  Margin="0,10,0,0" Background="{DynamicResource PrimaryHueLightBrush}"  >
+				<StackPanel Orientation="Horizontal" Spacing="5">
+					<controls:Card  >
+						<StackPanel Orientation="Horizontal" Spacing="5">
+							<avalonia:MaterialIcon Kind="Web" Width="20" Height="20" ></avalonia:MaterialIcon>
+							<TextBlock Classes="ButtonText" HorizontalAlignment="Center"  Text="{x:Static p:MainRes.TotalWebsitesText}" VerticalAlignment="Center"  />
+							<TextBlock Classes="ButtonText"  Text="{Binding  Path=TotalSites}" VerticalAlignment="Center"  />
+						</StackPanel>
+					</controls:Card>
+					<controls:Card  >
+						<StackPanel Orientation="Horizontal" Spacing="5">
+							<avalonia:MaterialIcon Kind="Link"  Width="20" Height="20" ></avalonia:MaterialIcon>
+							<TextBlock Classes="ButtonText"  Text="{x:Static p:MainRes.TotalLinksText}" VerticalAlignment="Center"  />
+							<TextBlock Classes="ButtonText"  Text="{Binding  Path=TotalLinks}" VerticalAlignment="Center"  />
+						</StackPanel>
+					</controls:Card>
+					<controls:Card  >						
+						<StackPanel Orientation="Horizontal" Spacing="5">
+							<avalonia:MaterialIcon Kind="BrokenImage"  Width="20" Height="20" ></avalonia:MaterialIcon>
+							<TextBlock Classes="ButtonText"   Text="{x:Static p:MainRes.TotalBrokenLinksText}" VerticalAlignment="Center"  />
+							<TextBlock Classes="ButtonText"  Text="{Binding  Path=TotalBrokenLinks}" VerticalAlignment="Center"  />
+						</StackPanel>
+					</controls:Card>
+				</StackPanel>
+			</controls:Card>
+			<StackPanel Grid.Row="4" Margin="0,10,0,0"  Spacing="5"    Orientation="Horizontal" >
+				<Button Classes="accent" Theme="{StaticResource MaterialOutlineButton}" Command="{Binding ExportCsv}"  >
+					<StackPanel Orientation="Horizontal" >
+						<avalonia:MaterialIcon Kind="FileCsvOutline"  Width="20" Height="20"    ></avalonia:MaterialIcon>
+						<TextBlock    Text="{x:Static p:MainRes.ExportCsv}" VerticalAlignment="Center"  />
+					</StackPanel>
+				</Button>
+				<Button Classes="accent" Theme="{StaticResource MaterialOutlineButton}" Command="{Binding ExportExcel}"   >
+					<StackPanel Orientation="Horizontal"  >
+						<avalonia:MaterialIcon Kind="FileExcelOutline"  Width="20" Height="20"    ></avalonia:MaterialIcon>
+						<TextBlock   Text="{x:Static p:MainRes.ExportExcel}" VerticalAlignment="Center"  />
+					</StackPanel>
+				</Button>
+				<Button Classes="accent" Theme="{StaticResource MaterialOutlineButton}" Command="{Binding ClearResults}"   >
+					<StackPanel Orientation="Horizontal"  >
+						<avalonia:MaterialIcon Kind="TrashCanOutline"  Width="20" Height="20"   ></avalonia:MaterialIcon>
+						<TextBlock  Text="{x:Static p:MainRes.ClearText}"  VerticalAlignment="Center"    />
+					</StackPanel>
+				</Button>
+
+			</StackPanel>
+		</Grid>
+	</DockPanel>
+</Window>
